@@ -6,9 +6,8 @@ from tqdm import tqdm
 from scipy.optimize import minimize
 from scipy.stats import norm
 
-from scripts.settings import ENERGIES_FPATH, DATA_DIR, CHANGE_POS, IM9
-from scripts.utils import load_extra_exp_data
-from scipy.stats.stats import spearmanr, pearsonr
+from scripts.settings import ENERGIES_FPATH, DATA_DIR, CHANGE_POS, IM9, EXP_DATA_FPATH
+from scipy.stats import spearmanr, pearsonr
 
 
 class CalibrationModel():
@@ -184,10 +183,9 @@ def calc_cv_table(data, model):
 
 
 if __name__ == '__main__':
-    data = pd.read_csv(join(DATA_DIR, 'merged_exp_data.csv'))
-    data = data.loc[data['backbone'] == 'E2/Im2', :].dropna()
-    data['norm_mic1'] = data['E_naive_mic'] - data['mic1']
-    data['norm_mic2'] = data['E_naive_mic'] - data['mic2']
+    data = pd.read_csv(EXP_DATA_FPATH)
+    data['norm_mic1'] = data['naive_mic1'] - data['mic1']
+    data['norm_mic2'] = data['naive_mic2'] - data['mic2']
     
     # Fit with the experimental data
     print('Model fitting')
@@ -238,16 +236,6 @@ if __name__ == '__main__':
     energies['y1'] = model.phi_to_yhat(np.array([phi_pred[0]]))
     energies['y2'] = model.phi_to_yhat(np.array([phi_pred[1]]))
     energies.to_parquet(join(DATA_DIR, 'calibrated_predictions.pq'))
-    
-    # Predict in the extra test data
-    print('Making predictions in the test data')
-    extra = load_extra_exp_data(energies)
-    extra_data = {'x1': extra.col2_binding.values,
-                  'x2': extra.col9_binding.values,
-                  'x3': np.zeros(extra.shape[0]),
-                  'x4': np.zeros(extra.shape[0])}
-    extra['y'] = model.predict(extra_data)[1]
-    extra.to_csv(join(DATA_DIR, 'test_pred.csv'))
     
     # Cross-validated correlation
     print('Running cross-validation analysis')

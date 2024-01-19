@@ -7,8 +7,7 @@ from os.path import join
 
 from gpmap.src.utils import read_dataframe, read_edges
 from scripts.settings import (COL2, COL9, EXP_DATA_FPATH, VIZ_DIR, EXP_PATH,
-                              EXP_EXTRA_DATA_FPATH, OLD_EXP_DATA_FPATH,
-    POS_LABELS)
+                              POS_LABELS)
 from gpmap.src.space import SequenceSpace
 from gpmap.src.genotypes import select_genotypes
 from itertools import combinations, product

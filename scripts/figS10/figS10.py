@@ -58,7 +58,7 @@ if __name__ == '__main__':
     axes = subplots[1]
     plot_uncertainty(phi_ypred, x='phi', shade=True, alpha=0.1, color='black',
                      q=0.05,add_expectation=True)
-    sns.scatterplot(x='phi_pred', y='viability_score', data=data, linewidth=0,
+    sns.scatterplot(x='phi_pred', y='y', data=data, linewidth=0,
                     alpha=0.2, ax=axes, color='purple')
     axes.set(xlabel=r'Predicted $\Delta\Delta G_{binding}$ [R.e.u.]', ylabel=r'Obs. normalized MIC score',
              xlim=(phi_ypred['phi'].values[0], phi_ypred['phi'].values[-1]),
