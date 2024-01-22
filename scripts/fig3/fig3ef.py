@@ -32,22 +32,25 @@ def add_cbar_hist_inset(axes, values, cmap='viridis',
 def get_orthogonal_pairs(nodes, p=0.25):
     fmins = nodes.loc[[COL2, COL9], 'function'].values
     fmaxs = nodes.loc[RECOMBINANTS, 'function'].values
-    print(fmins, fmaxs)
+    print('Predicted function at extant pairs', fmins)
+    print('Predicted function at recombinant pairs', fmaxs)
     fmax = max(fmaxs)
     
     threshold1 = fmax + p
     threshold2 = fmins[1] - p
     threshold1, threshold2 = 1.65, 5.25
-    print('Pair2', threshold1, threshold2)
+    print('Selecting thresholds for orthogonality with respect to each extant pair')
+    print('\tPair2', threshold1, threshold2)
     idx1 = (nodes['function'] >= threshold2) & (nodes['E2/Im'] <= threshold1) & (nodes['E/Im2'] <= threshold1)
     
     threshold2 = fmins[0] - p
     threshold1, threshold2 = 1.65, 1.70
-    print('Pair9', threshold1, threshold2)    
+    print('\tPair9', threshold1, threshold2)    
     idx2 = (nodes['function'] >= threshold2) & (nodes['E9/Im'] <= threshold1) & (nodes['E/Im9'] <= threshold1)
     
-    print('Col2 Orthogonal {} ({:.2f} %)'.format(idx1.sum(), idx1.mean() * 100))
-    print('Col9 Orthogonal {} ({:.2f} %)'.format(idx2.sum(), idx2.mean() * 100))
+    print('Identified sets of orthogonal pairs to extant pairs')
+    print('\tE2/Im2 Orthogonal {} ({:.2f} %)'.format(idx1.sum(), idx1.mean() * 100))
+    print('\tE2/Im2 Orthogonal {} ({:.2f} %)'.format(idx2.sum(), idx2.mean() * 100))
     return(idx1, idx2)
 
 
@@ -61,7 +64,6 @@ def add_legend(axes, label):
 def plot_path(axes, nodes, x, y, s=12, zorder=3, edges_width=0.8, color='col2_orthogonal'):
     path = nodes.loc[EXP_PATH, :]
     palette = {'Yes': 'black', 'No': 'darkgrey'}
-    print(path[['function', color]])
     n = path.shape[0]
     path_edges = pd.DataFrame({'i': np.arange(n-1), 'j': np.arange(1, n)})
     path_edges['c'] = 'No'
@@ -89,7 +91,6 @@ def plot_orthogonality(nodes, edges, x, y, cmap, idx1, idx2):
     nodes['col2_orthogonal'] = 'No'
     nodes.loc[idx1, 'col2_orthogonal'] = 'Yes'
     ndf = nodes.loc[nodes['col2_orthogonal'] == 'Yes', :].copy()
-    print(nodes.loc[EXP_PATH, ['function', 'E2/Im', 'E/Im2', 'col2_orthogonal']])
     
     ndf, edf = select_genotypes(nodes, ndf.index.values, edges=edges)
     g = nx.Graph()
@@ -106,7 +107,6 @@ def plot_orthogonality(nodes, edges, x, y, cmap, idx1, idx2):
     fig = dplot.dsg_to_fig(dsg1.opts(padding=0.05))
     fig.set_size_inches(3.5, 3.5)
     axes = fig.axes[0]
-    # plot_path(axes, nodes, x, y, s=2, edges_width=0.4, color='col2_orthogonal')
     axes.set(title='') #, xlabel='', ylabel='')
     axes.set_xlabel('Diffusion axis 1', fontsize=12)
     axes.set_ylabel('Diffusion axis 2', fontsize=12)
@@ -120,8 +120,6 @@ def plot_orthogonality(nodes, edges, x, y, cmap, idx1, idx2):
     # Col9 orthogonal
     nodes['col9_orthogonal'] = 'No'
     nodes.loc[idx2, 'col9_orthogonal'] = 'Yes'
-    print(nodes.loc[EXP_PATH, ['function', 'E9/Im', 'E/Im9', 'col9_orthogonal']])
-    
     ndf = nodes.loc[nodes['col9_orthogonal'] == 'Yes', :].copy()
     
     ndf, edf = select_genotypes(nodes, ndf.index.values, edges=edges)
@@ -138,7 +136,6 @@ def plot_orthogonality(nodes, edges, x, y, cmap, idx1, idx2):
     fig = dplot.dsg_to_fig(dsg2.opts(padding=0.05))
     fig.set_size_inches(3.5, 3.5)
     axes = fig.axes[0]
-    # plot_path(axes, nodes, x, y, s=5, edges_width=0.4, color='col9_orthogonal')
     axes.set_title('')
     axes.set_xlabel('Diffusion axis 1', fontsize=12)
     axes.set_ylabel('Diffusion axis 2', fontsize=12)
