@@ -48,6 +48,7 @@ Input data comprises is provided in the `data` folder and comprises two files:
 Scripts to reproduce each figure can be found in the `scripts` directory one by one or just by running
 
 ```bash
+export MPLBACKEND='agg'
 bash make_figures.sh
 ```
 
