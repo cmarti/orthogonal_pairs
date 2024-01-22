@@ -36,6 +36,8 @@ path=`pwd`
 export PYTHONPATH=$PYTHONPATH:$path
 ```
 
+In total, the process is expected to take about 2 minutes
+
 ### Input data
 
 Input data comprises is provided in the `data` folder and comprises two files:
@@ -45,12 +47,27 @@ Input data comprises is provided in the `data` folder and comprises two files:
 
 ### Scripts
 
-Scripts to reproduce each figure can be found in the `scripts` directory one by one or just by running
+Scripts to reproduce each figure can be found in the `scripts` directory one by one or running the following bash scripts
+
+To make calculations required to plot the visualizations.
+
+```bash
+bash 01_make_calculations.sh
+```
+
+To reproduce only the figures once the computations are done run the following script
 
 ```bash
 export MPLBACKEND='agg'
-bash make_figures.sh
+bash 02_make_figures.sh
 ```
+
+### Expected running times
+
+These scripts were run in Ubuntu 20.04.6 OS with a Intel(R) Core(TM) i7-10700 CPU @ 2.90GHz processor and required about 12GB of memory. Running times were:
+- Calculations:    X minutes       seconds
+- Plots:           9 minutes 6.902 seconds
+
 
 ### Output figures
 
