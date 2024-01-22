@@ -65,13 +65,14 @@ bash 02_make_figures.sh
 ### Expected running times
 
 These scripts were run in Ubuntu 20.04.6 OS with a Intel(R) Core(TM) i7-10700 CPU @ 2.90GHz processor and required about 12GB of memory. Running times were:
-- Calculations:    X minutes       seconds
-- Plots:           9 minutes 6.902 seconds
+- Calculations:   19 minutes 16.110 seconds
+- Plots:           9 minutes  6.902 seconds
 
 
-### Output figures
+### Expected output
 
-Individual panels will be saved at the `figures` folder, which were assembled manually into the different figures using [Inkscape](https://github.com/cmarti/gpmap-tools)
+- Intermediate files required to reproduce the figures will be stored in the `visualization` folder.
+- Individual panels will be saved at the `figures` folder, which were assembled manually into the different figures using [Inkscape](https://github.com/cmarti/gpmap-tools)
 
 ### Citation
 
