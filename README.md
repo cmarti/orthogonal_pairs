@@ -4,7 +4,7 @@ This repository contains scripts to reproduce the analysis of the computational 
 
 ### Requirements
 
-- [gpmap_tools](https://github.com/cmarti/gpmap-tools). Run with commit id XXXX
+- [gpmap_tools](https://github.com/cmarti/gpmap-tools). Run with commit id e57dee1121b2142d4f9b85d3e35f3edf60f40fcd
 
 ### Installation
 
@@ -18,7 +18,7 @@ Install dependencies
 ```bash
 git clone https://github.com/cmarti/gpmap-tools.git
 cd gpmap_tools
-git checkout XXXX
+git checkout e57dee1121b2142d4f9b85d3e35f3edf60f40fcd
 python setup.py install
 cd ..
 ```

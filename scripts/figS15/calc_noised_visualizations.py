@@ -7,7 +7,7 @@ from gpmap.src.space import SequenceSpace
 from gpmap.src.randwalk import WMWalk
 
 from scripts.settings import ENERGIES_FPATH, DATA_DIR ,VIZ_DIR
-from scripts.model2.figS10.calibration import CalibrationModel
+from scripts.figS10.calibration import CalibrationModel
 
 
 if __name__ == '__main__':

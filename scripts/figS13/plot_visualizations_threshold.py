@@ -13,7 +13,7 @@ if __name__ == '__main__':
     cmap = 'coolwarm'
     x, y = '1', '2'
     
-    edges_fpath = join(VIZ_DIR, 'edges.npz')
+    edges_fpath = join(VIZ_DIR, 'visualization.edges.npz')
     edges = read_edges(edges_fpath)
     
     for i, t in enumerate([1, 1.25, 1.5, 1.75, 2, 2.25]):

@@ -36,19 +36,6 @@ def load_exp_data(energies=None, new=True):
     return(data)
 
 
-def load_extra_exp_data(energies):
-    data = pd.read_csv(EXP_EXTRA_DATA_FPATH,
-                       usecols=['muts_seq', 'viability_score']).set_index('muts_seq')
-    
-    if energies is not None:
-        data['col2_binding'] = energies.loc[data.index, 'col2_binding'].values
-        data['col9_binding'] = energies.loc[data.index, 'col9_binding'].values
-        
-        if 'phi' in energies.columns:
-            data['phi'] = energies.loc[data.index, 'phi'].values
-            data['y'] = energies.loc[data.index, 'y'].values
-
-    return(data)
 
 
 def load_visualization(model=None, m=None, flip_axis=['1', '2'], load_edges=True, test=False):
@@ -66,7 +53,7 @@ def load_visualization(model=None, m=None, flip_axis=['1', '2'], load_edges=True
         
     res = nodes
     if load_edges:
-        edges_fpath = join(VIZ_DIR, 'edges.npz')
+        edges_fpath = join(VIZ_DIR, 'visualization.edges.npz')
         if test:
             edges_fpath = join(VIZ_DIR, 'test.edges.npz')
         edges = read_edges(edges_fpath)

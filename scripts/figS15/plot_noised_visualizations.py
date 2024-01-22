@@ -13,7 +13,7 @@ if __name__ == '__main__':
     model = 'model2'
     x, y = '1', '2'
     
-    edges_fpath = join(VIZ_DIR, 'edges.npz')
+    edges_fpath = join(VIZ_DIR, 'visualization.edges.npz')
     edges = read_edges(edges_fpath)
     
     for i, sd in enumerate([0.5, 1, 1.5, 2, 2.5, 3]):
