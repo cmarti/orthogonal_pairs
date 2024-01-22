@@ -5,7 +5,7 @@ python $base/figS10/calibration.py
 python $base/figS10/figS10.py
 
 echo "======== Figure 3 ======="
-python $base/fig3/calc_visualization.py
+#python $base/fig3/calc_visualization.py
 python $base/fig3/fig3a.py
 python $base/fig3/fig3b.py
 python $base/fig3/fig3c.py
@@ -26,7 +26,7 @@ echo "======== Figure S15 ======="
 python $base/figS15/calc_noised_visualizations.py
 python $base/figS15/plot_noised_visualizations.py
 
-echo "======== Figure S15 and S16 ======="
+echo "======== Figure S16 and S17 ======="
 python $base/figS16_S17/figS16_S17.py
 
 echo "======== Figure S18 ======="
