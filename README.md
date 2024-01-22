@@ -4,7 +4,36 @@ This repository contains scripts to reproduce the analysis of the computational 
 
 ### Requirements
 
-- [gpmap_tools](https://github.com/cmarti/gpmap-tools)
+- [gpmap_tools](https://github.com/cmarti/gpmap-tools). Run with commit id XXXX
+
+### Installation
+
+Create and activate new python environment
+```bash
+conda create -n orthogonal_pairs python=3.8
+conda activate orthogonal_pairs
+```
+
+Install dependencies
+```bash
+git clone https://github.com/cmarti/gpmap-tools.git
+cd gpmap_tools
+git checkout XXXX
+python setup.py install
+cd ..
+```
+
+Clone repository
+```bash
+git clone https://github.com/cmarti/orthogonal_pairs.git
+cd orthogonal_pairs
+```
+
+Add repository dir to PYTHONPATH
+```bash
+path=`pwd`
+export PYTHONPATH=$PYTHONPATH:$path
+```
 
 ### Input data
 
