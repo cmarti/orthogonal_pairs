@@ -4,7 +4,7 @@ This repository contains scripts to reproduce the analysis of the computational 
 
 ### Requirements
 
-- [gpmap_tools](https://github.com/cmarti/gpmap-tools). Run with commit id e57dee1121b2142d4f9b85d3e35f3edf60f40fcd
+- [gpmap_tools](https://github.com/cmarti/gpmap-tools). Run with commit id 54eadf1048acea529402e4a9ab1ac69fd1ec01e5
 
 ### Installation
 
@@ -17,8 +17,9 @@ conda activate orthogonal_pairs
 Install dependencies
 ```bash
 git clone https://github.com/cmarti/gpmap-tools.git
-cd gpmap_tools
-git checkout e57dee1121b2142d4f9b85d3e35f3edf60f40fcd
+cd gpmap-tools
+git checkout 54eadf1048acea529402e4a9ab1ac69fd1ec01e5
+pip install -r requirements.txt
 python setup.py install
 cd ..
 ```
