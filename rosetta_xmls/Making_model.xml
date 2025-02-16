@@ -1,0 +1,93 @@
+<ROSETTASCRIPTS>
+    <SCOREFXNS>
+        <ScoreFunction name="scorefxn_full" weights="%%scorefxn%%">
+            <Reweight scoretype="coordinate_constraint" weight="%%cst_value%%"/>
+    	</ScoreFunction>
+        <ScoreFunction name="soft_rep_full" weights="soft_rep">
+            <Reweight scoretype="coordinate_constraint" weight="%%cst_value%%"/>	
+            Reweight scoretype="res_type_constraint" weight="%%pssm_weight%%"/>	
+        </ScoreFunction>
+	<ScoreFunction name="scorefxn_fil" weights="%%scorefxn%%">
+        </ScoreFunction>                                                      	
+    </SCOREFXNS>	
+    
+    <RESIDUE_SELECTORS>
+	    <Index name="ress_fix" resnums="%%res_to_fix%%"/>
+    </RESIDUE_SELECTORS>   
+    
+    <TASKOPERATIONS>
+        <RestrictToRepacking name="rtr"/>
+        <OperateOnResidueSubset name="fix_not_neighbor">
+            <Not>
+            <Neighborhood distance="6">
+                    <Index resnums="24A,26A,27A,28A,29A,32A,33A,34A,38A,58A,72B,73B,77B,78B,83B,88B,97B,98B"/>
+            </Neighborhood>
+            </Not>
+            <PreventRepackingRLT/>
+        </OperateOnResidueSubset>
+        <InitializeFromCommandline name="init"/>
+        <IncludeCurrent name="include_curr"/>
+        <OperateOnResidueSubset name="fix_res" selector="ress_fix">
+                <PreventRepackingRLT/>
+        </OperateOnResidueSubset>
+        <OperateOnResidueSubset name="not_to_cst_sc">
+            <Not selector="ress_fix"/>
+            <PreventRepackingRLT/>
+        </OperateOnResidueSubset>
+	<OperateOnResidueSubset name="ress_strain">
+		<Neighborhood resnums="23A,24A,25A,26A,27A,28A,29A,30A,31A,32A,33A,34A,38A,41A,54A,55A,58A,72B,74B,77B,78B,81B,82B,83B,86B,87B,88B,89B,95B,97B,98B,99B" distance="4"/>
+	<RestrictToRepackingRLT/>
+	</OperateOnResidueSubset>
+
+
+	DesignAround name="ress_strain" resnums="23A,24A,25A,26A,27A,28A,29A,30A,31A,32A,33A,34A,38A,41A,54A,55A,58A,72B,74B,77B,78B,81B,82B,83B,86B,87B,88B,89B,95B,97B,98B,99B" repack_shell="8.0" allow_design="0" resnums_allow_design="0"/>
+    </TASKOPERATIONS>
+    
+    <MOVERS>
+	<MutateResidue name="mutres0" new_res="%%new_res0%%" target="%%target0%%" preserve_atom_coords="%%pac0%%"/>
+	<MutateResidue name="mutres1" new_res="%%new_res1%%" target="%%target1%%" preserve_atom_coords="%%pac1%%"/>
+	<MutateResidue name="mutres2" new_res="%%new_res2%%" target="%%target2%%" preserve_atom_coords="%%pac2%%"/>
+	<MutateResidue name="mutres3" new_res="%%new_res3%%" target="%%target3%%" preserve_atom_coords="%%pac3%%"/>
+	<MutateResidue name="mutres4" new_res="%%new_res4%%" target="%%target4%%" preserve_atom_coords="%%pac4%%"/>
+	<MutateResidue name="mutres5" new_res="%%new_res5%%" target="%%target5%%" preserve_atom_coords="%%pac5%%"/>
+	<MutateResidue name="mutres6" new_res="%%new_res6%%" target="%%target6%%" preserve_atom_coords="%%pac6%%"/>
+	<MutateResidue name="mutres7" new_res="%%new_res7%%" target="%%target7%%" preserve_atom_coords="%%pac7%%"/>
+	<MutateResidue name="mutres8" new_res="%%new_res8%%" target="%%target8%%" preserve_atom_coords="%%pac8%%"/>
+	<MutateResidue name="mutres9" new_res="%%new_res9%%" target="%%target9%%" preserve_atom_coords="%%pac9%%"/>
+	<MutateResidue name="mutres10" new_res="%%new_res10%%" target="%%target10%%" preserve_atom_coords="%%pac10%%"/>
+	<MutateResidue name="mutres11" new_res="%%new_res11%%" target="%%target11%%" preserve_atom_coords="%%pac11%%"/>
+	<MutateResidue name="mutres12" new_res="%%new_res12%%" target="%%target12%%" preserve_atom_coords="%%pac12%%"/>
+	<MutateResidue name="mutres13" new_res="%%new_res13%%" target="%%target13%%" preserve_atom_coords="%%pac13%%"/>
+	<MutateResidue name="mutres14" new_res="%%new_res14%%" target="%%target14%%" preserve_atom_coords="%%pac14%%"/>
+	<MutateResidue name="mutres15" new_res="%%new_res15%%" target="%%target15%%" preserve_atom_coords="%%pac15%%"/>
+	<MutateResidue name="mutres16" new_res="%%new_res16%%" target="%%target16%%" preserve_atom_coords="%%pac16%%"/>
+       	<AtomTree name="tree" docking_ft="1"/>
+        <ConstraintSetMover name="add_CA_cst" cst_file="%%cst_full_path%%"/>	        
+        <AtomCoordinateCstMover name="fix_res_sc_cst" coord_dev="0.5" bounded="false" sidechain="true" task_operations="not_to_cst_sc"/> 
+        <PackRotamersMover name="prm" task_operations="init,include_curr,rtr,fix_not_neighbor,fix_res" scorefxn="scorefxn_full"/> 
+        <RotamerTrialsMinMover name="rtmin" task_operations="init,include_curr,rtr,fix_not_neighbor,fix_res" scorefxn="scorefxn_full"/>
+        <MinMover name="min" bb="1" chi="1" jump="1" scorefxn="scorefxn_full"/>
+        <PackRotamersMover name="soft_repack" scorefxn="soft_rep_full" task_operations="init,include_curr,rtr,fix_not_neighbor,fix_res"/>
+	<MinMover name="hard_min" scorefxn="scorefxn_fil" chi="1" bb="0" jump="1"/>
+    </MOVERS>
+    
+    <FILTERS>
+        <DesignableResidues name="designable" task_operations="fix_not_neighbor" designable="0" packable="1"/>
+        <Ddg name="ddg" scorefxn="scorefxn_fil" threshold="1000" confidence="0" repeats="2"/>
+        <BindingStrain name="ddg_strain" threshold="10" task_operations="init,ress_strain" scorefxn="scorefxn_fil" relax_mover="hard_min" jump="1" confidence="0"/>
+    </FILTERS>
+    
+    <PROTOCOLS>
+	<Add mover="tree"/>
+        <Add mover="add_CA_cst"/>
+        <Add mover="fix_res_sc_cst"/>
+        <Add mover="soft_repack"/>
+        <Add mover="min"/>
+        <Add mover="prm"/>
+        <Add mover="min"/>
+        <Add filter="designable"/>
+	<Add filter="ddg"/>
+ 	<Add filter="ddg_strain"/>
+    </PROTOCOLS>
+    <OUTPUT scorefxn="scorefxn_full"/>
+</ROSETTASCRIPTS>
