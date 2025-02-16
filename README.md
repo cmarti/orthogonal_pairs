@@ -74,6 +74,17 @@ These scripts were run in Ubuntu 20.04.6 OS with a Intel(R) Core(TM) i7-10700 CP
 - Intermediate files required to reproduce the figures will be stored in the `visualization` folder.
 - Individual panels will be saved at the `figures` folder, which were assembled manually into the different figures using [Inkscape](https://github.com/cmarti/gpmap-tools)
 
+### Rosetta xmls to produce energetic data 
+To create energetic calculations for structures of binding proteins:
+First create refined model with Refinement.xml and flag_ref :
+```bash 
+~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease -parser:protocol <path_to_refinement_xml> -s <path_to_PDB_file> @<path_to_flag_file> -parser:script_vars cst_full_path=<path_to_coordinate_constraint_file> -nstruct 20
+```
+Second create the model with the wanted mutations using Making_model.xml and flags_Mm :
+```bash
+~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @<path_to_flag_file> 
+```
+
 ### Citation
 
 Ziv Avizemer, Carlos Martí‐Gómez, Shlomo Yakir Hoch et al. Evolutionary paths that link orthogonal pairs of binding proteins, 20 April 2023, PREPRINT (Version 1) available at Research Square [https://doi.org/10.21203/rs.3.rs-2836905/v1]
