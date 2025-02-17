@@ -4,6 +4,7 @@ This repository contains scripts to reproduce the analysis of the computational 
 
 ### Requirements
 
+- [Rosetta](https://rosettacommons.org/software/). Version?
 - [gpmap_tools](https://github.com/cmarti/gpmap-tools). Run with commit id 54eadf1048acea529402e4a9ab1ac69fd1ec01e5
 
 ### Installation
@@ -24,6 +25,10 @@ python setup.py install
 cd ..
 ```
 
+To install Rosetta ...
+
+
+
 Clone repository
 ```bash
 git clone https://github.com/cmarti/orthogonal_pairs.git
@@ -42,10 +47,27 @@ In total, the process is expected to take about 2 minutes
 
 Input data comprises is provided in the `data` folder and comprises two files:
 
+- `Input PDB files for the scripts below`
 - `colicins.pq`: a parquet file containing the predicted binding energies for every possible pair computed in the context of both E2/Im2 E9/Im9 crystal structures
 - `experimental_data.csv`: a csv file containing experimental measurements for the 110 pairs used to calibrated the computationally predicted energies
 
-### Scripts
+
+### Computing E/Im energies with Rosetta
+
+To create energetic calculations for structures of binding proteins:
+
+First, create refined model with `Refinement.xml` and `flag_ref` :
+
+```bash 
+~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease -parser:protocol rosetta_xmls/Refinement.xml -s <path_to_PDB_file> @rosetta_xmls/flag_ref -parser:script_vars cst_full_path=<path_to_coordinate_constraint_file> -nstruct 20
+```
+
+Second, create the model with the wanted mutations using `Making_model.xml` and `flags_Mm`:
+```bash
+~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @rosetta_xmls/flags_Mm
+```
+
+### Visualizing the E/Im binding landscape
 
 Scripts to reproduce each figure can be found in the `scripts` directory one by one or running the following bash scripts
 
@@ -64,26 +86,22 @@ bash 02_make_figures.sh
 
 ### Expected running times
 
-These scripts were run in Ubuntu 20.04.6 OS with a Intel(R) Core(TM) i7-10700 CPU @ 2.90GHz processor and required about 12GB of memory. Running times were:
+Rosetta was run in ...
+- Model refinement: 
+- Energy computatin in mutant sequences: 
+
+
+Visualization scripts were run in Ubuntu 20.04.6 OS with a Intel(R) Core(TM) i7-10700 CPU @ 2.90GHz processor and required about 12GB of memory. Running times were:
 - Calculations:   19 minutes 16.110 seconds
 - Plots:           9 minutes  6.902 seconds
 
 
 ### Expected output
 
+- Calculation of binding energies of the E/Im pairs on the two backbones is stored at `Output file from running Rosetta`
 - Intermediate files required to reproduce the figures will be stored in the `visualization` folder.
 - Individual panels will be saved at the `figures` folder, which were assembled manually into the different figures using [Inkscape](https://github.com/cmarti/gpmap-tools)
 
-### Rosetta xmls to produce energetic data 
-To create energetic calculations for structures of binding proteins:
-First create refined model with Refinement.xml and flag_ref :
-```bash 
-~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease -parser:protocol <path_to_refinement_xml> -s <path_to_PDB_file> @<path_to_flag_file> -parser:script_vars cst_full_path=<path_to_coordinate_constraint_file> -nstruct 20
-```
-Second create the model with the wanted mutations using Making_model.xml and flags_Mm :
-```bash
-~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @<path_to_flag_file> 
-```
 
 ### Citation
 
