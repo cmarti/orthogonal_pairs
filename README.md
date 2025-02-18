@@ -59,14 +59,54 @@ To create energetic calculations for structures of binding proteins:
 
 First, create refined model with `Refinement.xml` and `flag_ref` :
 
+- input structure: PDB file
+- coordinate constriant file: cst file for the PDB you running
+
 ```bash 
 ~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease -parser:protocol rosetta_xmls/Refinement.xml -s <path_to_PDB_file> @rosetta_xmls/flag_ref -parser:script_vars cst_full_path=<path_to_coordinate_constraint_file> -nstruct 20
 ```
 
 Second, create the model with the wanted mutations using `Making_model.xml` and `flags_Mm`:
+
+- input structure: refined model with lowest score
+- coordinate constriant file: same as above
+- residues to fix: critical residues for function (for colicins binding: 54A,55A,86B)
+
+For each combination of mutations from the resfile the following command should be created:
 ```bash
-~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @rosetta_xmls/flags_Mm
+~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @rosetta_xmls/flags_Mm -parser:script_vars target0=24A new_res0=ARG pac0=true target1=26A new_res1=GLU pac1=true target2=27A new_res2=GLY pac2=true target3=28A new_res3=ALA pac3=true target4=29A new_res4=THR pac4=true target5=32A new_res5=ASP pac5=true target6=33A new_res6=ASP pac6=true target7=34A new_res7=ASN pac7=true target8=38A new_res8=ARG pac8=true target9=58A new_res9=ASP pac9=true target10=72B new_res10=LYS pac10=true target11=73B new_res11=PRO pac11=false target12=77B new_res12=SER pac12=false target13=78B new_res13=ASN pac13=true target14=83B new_res14=LYS pac14=true target15=97B new_res15=LYS pac15=false target16=98B new_res16=ARG pac16=true
 ```
+More examples for more combinations:
+```bash
+~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @<path_to_flag_file> -parser:script_vars target0=24A new_res0=ARG p
+ac0=true target1=26A new_res1=GLU pac1=true target2=27A new_res2=GLY pac2=true target3=28A new_res3=ALA pac3=true target4=29A new_res
+4=THR pac4=true target5=32A new_res5=ASP pac5=true target6=33A new_res6=ASP pac6=true target7=34A new_res7=ASN pac7=true target8=38A
+new_res8=ARG pac8=true target9=58A new_res9=ASP pac9=true target10=72B new_res10=LYS pac10=true target11=73B new_res11=PRO pac11=fals
+e target12=77B new_res12=SER pac12=false target13=78B new_res13=ASN pac13=true target14=83B new_res14=LYS pac14=true target15=97B new
+_res15=GLU pac15=true target16=98B new_res16=MET pac16=false
+
+~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @<path_to_flag_file> -parser:script_vars target0=24A new_res0=ARG p
+ac0=true target1=26A new_res1=GLU pac1=true target2=27A new_res2=GLY pac2=true target3=28A new_res3=ALA pac3=true target4=29A new_res
+4=THR pac4=true target5=32A new_res5=ASP pac5=true target6=33A new_res6=ASP pac6=true target7=34A new_res7=ASN pac7=true target8=38A
+new_res8=ARG pac8=true target9=58A new_res9=ASP pac9=true target10=72B new_res10=LYS pac10=true target11=73B new_res11=PRO pac11=fals
+e target12=77B new_res12=SER pac12=false target13=78B new_res13=ASN pac13=true target14=83B new_res14=LYS pac14=true target15=97B new
+_res15=GLU pac15=true target16=98B new_res16=VAL pac16=false
+
+~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @<path_to_flag_file> -parser:script_vars target0=24A new_res0=ARG p
+ac0=true target1=26A new_res1=GLU pac1=true target2=27A new_res2=GLY pac2=true target3=28A new_res3=ALA pac3=true target4=29A new_res
+4=THR pac4=true target5=32A new_res5=ASP pac5=true target6=33A new_res6=ASP pac6=true target7=34A new_res7=ASP pac7=false target8=38A
+ new_res8=THR pac8=false target9=58A new_res9=GLU pac9=false target10=72B new_res10=ASN pac10=false target11=73B new_res11=GLY pac11=
+true target12=77B new_res12=SER pac12=false target13=78B new_res13=SER pac13=false target14=83B new_res14=ASN pac14=false target15=97
+B new_res15=LYS pac15=false target16=98B new_res16=VAL pac16=false
+
+~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @<path_to_flag_file> -parser:script_vars target0=24A new_res0=ARG p
+ac0=true target1=26A new_res1=GLU pac1=true target2=27A new_res2=GLY pac2=true target3=28A new_res3=ALA pac3=true target4=29A new_res
+4=THR pac4=true target5=32A new_res5=ASP pac5=true target6=33A new_res6=ASP pac6=true target7=34A new_res7=ASP pac7=false target8=38A
+ new_res8=THR pac8=false target9=58A new_res9=GLU pac9=false target10=72B new_res10=ASN pac10=false target11=73B new_res11=GLY pac11=
+true target12=77B new_res12=SER pac12=false target13=78B new_res13=SER pac13=false target14=83B new_res14=ASN pac14=false target15=97
+B new_res15=LYS pac15=false target16=98B new_res16=MET pac16=false
+```
+Run each command to get the model and energetic terms for that mutational combination
 
 ### Visualizing the E/Im binding landscape
 
@@ -119,20 +159,13 @@ Second create the model with the wanted mutations using Making_model.xml and fla
 
 For each combination of mutations from the resfile the following command should be created:
 ```bash
-~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @<path_to_flag_file> -parser:script_vars target0=24A new_res0=ARG pac0=true target1=26A new_res1=GLU pac1=true target2=27A new_res2=GLY pac2=true target3=28A new_res3=ALA pac3=true target4=29A new_res4=THR pac4=true target5=32A new_res5=ASP pac5=true target6=33A new_res6=ASP pac6=true target7=34A new_res7=ASN pac7=true target8=38A new_res8=ARG pac8=true target9=58A new_res9=ASP pac9=true target10=72B new_res10=LYS pac10=true target11=73B new_res11=PRO pac11=false target12=77B new_res12=SER pac12=false target13=78B new_res13=ASN pac13=true target14=83B new_res14=LYS pac14=true target15=97B new_res15=LYS pac15=false target16=98B new_res16=ARG pac16=true
 ```
-More examples for more combinations:
 ```bash
-~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @<path_to_flag_file> -parser:script_vars target0=24A new_res0=ARG pac0=true target1=26A new_res1=GLU pac1=true target2=27A new_res2=GLY pac2=true target3=28A new_res3=ALA pac3=true target4=29A new_res4=THR pac4=true target5=32A new_res5=ASP pac5=true target6=33A new_res6=ASP pac6=true target7=34A new_res7=ASN pac7=true target8=38A new_res8=ARG pac8=true target9=58A new_res9=ASP pac9=true target10=72B new_res10=LYS pac10=true target11=73B new_res11=PRO pac11=false target12=77B new_res12=SER pac12=false target13=78B new_res13=ASN pac13=true target14=83B new_res14=LYS pac14=true target15=97B new_res15=GLU pac15=true target16=98B new_res16=MET pac16=false
 
-~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @<path_to_flag_file> -parser:script_vars target0=24A new_res0=ARG pac0=true target1=26A new_res1=GLU pac1=true target2=27A new_res2=GLY pac2=true target3=28A new_res3=ALA pac3=true target4=29A new_res4=THR pac4=true target5=32A new_res5=ASP pac5=true target6=33A new_res6=ASP pac6=true target7=34A new_res7=ASN pac7=true target8=38A new_res8=ARG pac8=true target9=58A new_res9=ASP pac9=true target10=72B new_res10=LYS pac10=true target11=73B new_res11=PRO pac11=false target12=77B new_res12=SER pac12=false target13=78B new_res13=ASN pac13=true target14=83B new_res14=LYS pac14=true target15=97B new_res15=GLU pac15=true target16=98B new_res16=VAL pac16=false
 
-~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @<path_to_flag_file> -parser:script_vars target0=24A new_res0=ARG pac0=true target1=26A new_res1=GLU pac1=true target2=27A new_res2=GLY pac2=true target3=28A new_res3=ALA pac3=true target4=29A new_res4=THR pac4=true target5=32A new_res5=ASP pac5=true target6=33A new_res6=ASP pac6=true target7=34A new_res7=ASP pac7=false target8=38A new_res8=THR pac8=false target9=58A new_res9=GLU pac9=false target10=72B new_res10=ASN pac10=false target11=73B new_res11=GLY pac11=true target12=77B new_res12=SER pac12=false target13=78B new_res13=SER pac13=false target14=83B new_res14=ASN pac14=false target15=97B new_res15=LYS pac15=false target16=98B new_res16=VAL pac16=false
 
-~/Rosetta/main/source/bin/rosetta_scripts.default.linuxgccrelease @<path_to_flag_file> -parser:script_vars target0=24A new_res0=ARG pac0=true target1=26A new_res1=GLU pac1=true target2=27A new_res2=GLY pac2=true target3=28A new_res3=ALA pac3=true target4=29A new_res4=THR pac4=true target5=32A new_res5=ASP pac5=true target6=33A new_res6=ASP pac6=true target7=34A new_res7=ASP pac7=false target8=38A new_res8=THR pac8=false target9=58A new_res9=GLU pac9=false target10=72B new_res10=ASN pac10=false target11=73B new_res11=GLY pac11=true target12=77B new_res12=SER pac12=false target13=78B new_res13=SER pac13=false target14=83B new_res14=ASN pac14=false target15=97B new_res15=LYS pac15=false target16=98B new_res16=MET pac16=false
 ```
 
-Run each command to get the model and energetic terms for that mutational combination
 
 =======
 >>>>>>> b024578801d16b902f3609188101c42829072744
