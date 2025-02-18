@@ -4,7 +4,7 @@ This repository contains scripts to reproduce the analysis of the computational 
 
 ### Requirements
 
-- [Rosetta](https://rosettacommons.org/software/). Version: Rosetta 3
+- [Rosetta](https://rosettacommons.org/software/). RosettaCommons/main.git , Git commit id 1cdfc600cfe87cb1f733259dbc36c6734721770d
 - [gpmap_tools](https://github.com/cmarti/gpmap-tools). Run with commit id 54eadf1048acea529402e4a9ab1ac69fd1ec01e5
 
 ### Installation
