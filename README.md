@@ -77,8 +77,10 @@ First, we create a refined model of each wild-type pair, E2/Im2 and E9/Im9 with 
 ```
 
 These scripts will generate a series of files ...
+ 
+20 pdb files, `score_ref_E2Im2.sc`
 
-
+Select the model (PDB) with the lowest total_score for next step
 
 Second, create the model with the desired mutations using `Making_model.xml` and `flags_Mm`:
 
@@ -124,6 +126,8 @@ B new_res15=LYS pac15=false target16=98B new_res16=MET pac16=false
 ```
 
 Run each command to get the model and energetic terms for that mutational combination
+
+Collect all score files into a table for data manipulation. It is possible to do it with Pandas-Python data analysis library
 
 
 ### Visualizing the E/Im binding landscape
