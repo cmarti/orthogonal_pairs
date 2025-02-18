@@ -6,4 +6,3 @@
 -ignore_zero_occupancy false
 -overwrite
 -mute
--database <path_to_Rosetta_Database>
