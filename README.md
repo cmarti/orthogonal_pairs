@@ -128,8 +128,8 @@ bash 02_make_figures.sh
 ### Expected running times
 
 Rosetta was run in ...
-- Model refinement: 
-- Energy computatin in mutant sequences: 
+- Model refinement: ~7 hrs for 20 refined models
+- Energy computatin in mutant sequences for one model : ~2min (the sequence space includes ~2M mutants)  
 
 
 Visualization scripts were run in Ubuntu 20.04.6 OS with a Intel(R) Core(TM) i7-10700 CPU @ 2.90GHz processor and required about 12GB of memory. Running times were:
