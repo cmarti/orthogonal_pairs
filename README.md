@@ -79,20 +79,24 @@ Once we have selected the best models for each wild-type structure, we can creat
 
 Note: when designing new sequences, critical residues for function should not be modified. In this case, we have seen that 54A,55A,86B are essential for binding
 
-The following command allows to compute the binding energy of a single combination of mutations across the binding interface, where the aminoacid identities at each residue different from the reference structure need to be specified.
+The following command allows to compute the binding energy of a single combination of mutations across the binding interface, where the aminoacid identities at the mutated residues need to be specified.
 ```bash
+sequence="REGATDDNRDKPSNKKR"
 mutant="target0=24A new_res0=ARG pac0=true target1=26A new_res1=GLU pac1=true target2=27A new_res2=GLY pac2=true target3=28A new_res3=ALA pac3=true target4=29A new_res4=THR pac4=true target5=32A new_res5=ASP pac5=true target6=33A new_res6=ASP pac6=true target7=34A new_res7=ASN pac7=true target8=38A new_res8=ARG pac8=true target9=58A new_res9=ASP pac9=true target10=72B new_res10=LYS pac10=true target11=73B new_res11=PRO pac11=false target12=77B new_res12=SER pac12=false target13=78B new_res13=ASN pac13=true target14=83B new_res14=LYS pac14=true target15=97B new_res15=LYS pac15=false target16=98B new_res16=ARG pac16=true"
 
-rosetta_scripts @rosetta_xmls/flags_Mm -s data/E2Im2_3u43_refined.pdb -parser:script_vars cst_full_path=data/cst_E2Im2_3u43 $mutant -out:file:scorefile mutant_score_E2Im2.sc
+rosetta_scripts @rosetta_xmls/flags_Mm -s data/E2Im2_3u43_refined.pdb -parser:script_vars cst_full_path=data/cst_E2Im2_3u43 $mutant -out:file:scorefile $sequence.E2Im2.sc
 ```
 
-The same sequence needs to be evaluated in both wild-type structures, which can be done by changing the PDB input file in which to model the mutation
+The same sequence is evaluated in both wild-type structures, which can be done by changing the PDB input file in which to model the mutation
 ```bash
-rosetta_scripts @rosetta_xmls/flags_Mm -s data/E9Im9_1emv_refined.pdb -parser:script_vars cst_full_path=data/cst_E9Im9_1emv $mutant -out:file:scorefile mutant_score_E9Im9.sc
+rosetta_scripts @rosetta_xmls/flags_Mm -s data/E9Im9_1emv_refined.pdb -parser:script_vars cst_full_path=data/cst_E9Im9_1emv $mutant -out:file:scorefile $sequence.E9Im9.sc
 ```
-The output files `mutant_score_E2Im2.sc` and `mutant_score_E9Im9.sc` contain the energies evaluated in each structure, where the column `total_score` corresponds to the total energy of the complex, whereas the `ddg` column contains the binding energy.
 
-This can be run for each possible combination of mutations and parsed into a single table `data/colicins.pq` containing the binding energy in both structures for each possible sequence to use for downstream analysis
+The output files `$sequence.E2Im2.sc` and `$sequence.E9Im9.sc` contain the energies evaluated in each structure:
+- The column `total_score` corresponds to the total energy of the complex
+- The column `ddg` contains the protein-protein binding energy.
+
+These files can be run for each possible combination of mutations in parallel and parsed into a single table `data/colicins.pq` containing the binding energy in both structures for each possible sequence to use for downstream analysis
 
 ### Visualizing the E/Im binding landscape
 
