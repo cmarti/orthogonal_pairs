@@ -61,14 +61,14 @@ To create energetic calculations for structures of binding proteins, we first cr
 - coordinate constriant file: cst file for the PDB you running
 
 ```bash 
-rosetta_scripts -parser:protocol rosetta_xmls/Refinement.xml -s data/E2Im2_3u43.pdb.gz @rosetta_xmls/flag_ref -parser:script_vars cst_full_path=data/cst_E2Im2_3u43 -nstruct 20
-rosetta_scripts -parser:protocol rosetta_xmls/Refinement.xml -s data/E9Im9_1emv.pdb.gz @rosetta_xmls/flag_ref -parser:script_vars cst_full_path=data/cst_E9Im9_1emv -nstruct 20
+rosetta_scripts -parser:protocol rosetta_xmls/Refinement.xml -s data/E2Im2_3u43.pdb.gz @rosetta_xmls/flag_ref -parser:script_vars cst_full_path=data/cst_E2Im2_3u43 -nstruct 20 -out:file:scorefile E2Im2_refinement_scores.sc
+rosetta_scripts -parser:protocol rosetta_xmls/Refinement.xml -s data/E9Im9_1emv.pdb.gz @rosetta_xmls/flag_ref -parser:script_vars cst_full_path=data/cst_E9Im9_1emv -nstruct 20 -out:file:scorefile E9Im9_refinement_scores.sc
 ```
 
 These commands will generate 20 pdb files in the format `E2Im2_3u43_00xx.pdb` and a file `score.sc` with the scores for each of the 20 models for each wild-type structure.
 Note that these calculations are stochastic, so the energy values obtained can differ from the reported here. 
 
-Select the model (PDB) with the lowest `total_score` from the `scores.sc` file for next step
+Select the model (PDB) with the lowest `total_score` from the `scores.sc` file. Copy them into the `data/E9Im9_1emv_refined.pdb` and `data/E2Im2_3u43_refined.pdb` files that will be used to score mutants.
 
 ### Compute the energy of mutant combinations
 
@@ -81,12 +81,18 @@ Note: when designing new sequences, critical residues for function should not be
 
 The following command allows to compute the binding energy of a single combination of mutations across the binding interface, where the aminoacid identities at each residue different from the reference structure need to be specified.
 ```bash
-rosetta_scripts @rosetta_xmls/flags_Mm -s data/E2Im2_3u43.pdb.gz -parser:script_vars cst_full_path=data/cst_E2Im2_3u43 target0=24A new_res0=ARG pac0=true target1=26A new_res1=GLU pac1=true target2=27A new_res2=GLY pac2=true target3=28A new_res3=ALA pac3=true target4=29A new_res4=THR pac4=true target5=32A new_res5=ASP pac5=true target6=33A new_res6=ASP pac6=true target7=34A new_res7=ASN pac7=true target8=38A new_res8=ARG pac8=true target9=58A new_res9=ASP pac9=true target10=72B new_res10=LYS pac10=true target11=73B new_res11=PRO pac11=false target12=77B new_res12=SER pac12=false target13=78B new_res13=ASN pac13=true target14=83B new_res14=LYS pac14=true target15=97B new_res15=LYS pac15=false target16=98B new_res16=ARG pac16=true 
+mutant="target0=24A new_res0=ARG pac0=true target1=26A new_res1=GLU pac1=true target2=27A new_res2=GLY pac2=true target3=28A new_res3=ALA pac3=true target4=29A new_res4=THR pac4=true target5=32A new_res5=ASP pac5=true target6=33A new_res6=ASP pac6=true target7=34A new_res7=ASN pac7=true target8=38A new_res8=ARG pac8=true target9=58A new_res9=ASP pac9=true target10=72B new_res10=LYS pac10=true target11=73B new_res11=PRO pac11=false target12=77B new_res12=SER pac12=false target13=78B new_res13=ASN pac13=true target14=83B new_res14=LYS pac14=true target15=97B new_res15=LYS pac15=false target16=98B new_res16=ARG pac16=true"
+
+rosetta_scripts @rosetta_xmls/flags_Mm -s data/E2Im2_3u43_refined.pdb -parser:script_vars cst_full_path=data/cst_E2Im2_3u43 $mutant -out:file:scorefile mutant_score_E2Im2.sc
 ```
 
-Run each command to get the model and energetic terms for that mutational combination.
-Collect all score files into a table for data manipulation. It is possible to do it with Pandas-Python data analysis library.
+The same sequence needs to be evaluated in both wild-type structures, which can be done by changing the PDF input file in which to model the mutation
+```bash
+rosetta_scripts @rosetta_xmls/flags_Mm -s data/E9Im9_1emv_refined.pdb -parser:script_vars cst_full_path=data/cst_E9Im9_1emv $mutant -out:file:scorefile mutant_score_E9Im9.sc
+```
+The output files `mutant_score_E2Im2.sc` and `mutant_score_E9Im9.sc` contain the energies evaluated in each structure, where the column `total_score` corresponds to the total energy of the complex, whereas the `ddg` column contains the binding energy.
 
+This can be run for each possible combination of mutations and parsed into a single table `data/colicins.pq` containing the binding energy in both structures for each possible sequence to use for downstream analysis
 
 ### Visualizing the E/Im binding landscape
 
