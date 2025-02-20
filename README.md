@@ -86,7 +86,7 @@ mutant="target0=24A new_res0=ARG pac0=true target1=26A new_res1=GLU pac1=true ta
 rosetta_scripts @rosetta_xmls/flags_Mm -s data/E2Im2_3u43_refined.pdb -parser:script_vars cst_full_path=data/cst_E2Im2_3u43 $mutant -out:file:scorefile mutant_score_E2Im2.sc
 ```
 
-The same sequence needs to be evaluated in both wild-type structures, which can be done by changing the PDF input file in which to model the mutation
+The same sequence needs to be evaluated in both wild-type structures, which can be done by changing the PDB input file in which to model the mutation
 ```bash
 rosetta_scripts @rosetta_xmls/flags_Mm -s data/E9Im9_1emv_refined.pdb -parser:script_vars cst_full_path=data/cst_E9Im9_1emv $mutant -out:file:scorefile mutant_score_E9Im9.sc
 ```
